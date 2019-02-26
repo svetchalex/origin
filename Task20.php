@@ -27,6 +27,12 @@ function getIntersectionForSortedArray($arr1, $arr2)
     return $res_arr;
 }
 
+/**
+ * @param $arr1
+ * @param $arr2
+ *
+ * @return array
+ */
 function getIntersectionForSortedArray2($arr1, $arr2)
 {
     if (!empty($arr1) && !empty($arr2)) {

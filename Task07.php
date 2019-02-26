@@ -13,3 +13,4 @@ function addPrefix($names, $prefix)
     }
     return $newName;
 }
+

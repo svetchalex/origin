@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $text
+ *
+ * @return int
+ */
 function countUniqChars($text)
 {
     $res = 0;

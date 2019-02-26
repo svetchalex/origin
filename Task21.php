@@ -6,10 +6,12 @@
  */
 function getComposerFileData($json)
 {
+    $arr = [];
     if (!empty($json)) {
         $arr = json_decode($json, true);
-        return $arr;
+
     }
+    return $arr;
 }
 
 

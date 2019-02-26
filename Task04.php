@@ -6,6 +6,8 @@
  * @return bool
  */
 function swap ($a, $b){
-    $a+=+$b-$b=$a;
+    $hold = $a;
+    $a= $b;
+    $b=$hold;
     return true;
 }

@@ -5,9 +5,10 @@
  *
  * @return bool
  */
-function swap ($a, $b){
+function swap($a, $b)
+{
     $hold = $a;
-    $a= $b;
-    $b=$hold;
+    $a = $b;
+    $b = $hold;
     return true;
 }

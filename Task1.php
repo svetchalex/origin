@@ -16,7 +16,7 @@ function isPalindrome($str)
     $cnt = count($chars);
     $flo = floor($cnt / 2);
     foreach ($chars as $key => $value) {
-        if ($key < $flo && $value !== $chars[$cnt - $key]) {
+        if ($key < $flo && $value !== $chars[$cnt - $key - 1]) {
             $pal = false;
         }
     }

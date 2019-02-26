@@ -7,11 +7,9 @@
 function reverse($number)
 {
     $abs_number = abs($number);
-    $str = settype($abs_number, 'string');
-    $rev = strrev($str);
-    $res = settype($rev, 'integer');
+    $rev = strrev($abs_number);
     if ($number < 0) {
-        $res *= -1;
+        $rev *= -1;
     }
-    return $res;
+    return $rev;
 }

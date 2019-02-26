@@ -9,7 +9,7 @@ function addPrefix($names, $prefix)
 {
     $newName = [];
     foreach ($names as $key => $name) {
-        $newName = $prefix . ' ' . $name;
+        $newName[$key] = $prefix . ' ' . $name;
     }
     return $newName;
 }

@@ -20,4 +20,3 @@ function createTable()
     }
 }
 
-createTable();

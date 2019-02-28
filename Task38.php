@@ -1,4 +1,9 @@
 <?php
+/**
+ * @param $emails
+ *
+ * @return array
+ */
 function getFreeDomainsCount($emails)
 {
         define('FREE_EMAIL_DOMAINS', [

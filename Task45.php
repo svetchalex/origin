@@ -2,36 +2,41 @@
 /**
  *
  */
-function createTable()
+function changeTable()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
     $sql1 = <<<SQL
-        DROP TABLE IF EXISTS courses
-SQL;
-    $sql2 = <<<SQL
         DROP TABLE IF EXISTS users
 SQL;
+    $sql2 = <<<SQL
+        DROP TABLE IF EXISTS cars
+SQL;
     $sql3 = <<<SQL
-        DROP TABLE IF EXISTS course_members
+       CREATE TABLE users (
+       first_name varchar(255),
+       last_name varchar(255),
+       created_at timestamp)
 SQL;
     $sql4 = <<<SQL
-        CREATE TABLE courses(
-        name VARCHAR (255), 
-        body TEXT, 
-        created_at TIMESTAMP)
+        CREATE TABLE cars(
+        user_first_name varchar(255),
+        brand varchar(255), 
+        model varchar(255))
 SQL;
     $sql5 = <<<SQL
-        CREATE TABLE users(
-        first_name VARCHAR (255), 
-        email VARCHAR (255), 
-        manager  BOOLEAN)
+       INSERT INTO users (first_name, last_name, created_at) VALUES
+       ('Voinov', 'Viktor', '2003-03-29'),
+       ('Smernov', 'Oleg', '2006-11-18')
 SQL;
     $sql6 = <<<SQL
-        CREATE TABLE course_members(
-        user_id INTEGER, 
-        course_id INTEGER , 
-        created_at  TIMESTAMP)
+       INSERT INTO cars (user_first_name, brand, model) VALUES
+       ('Voinov', 'Bentley', 'Azure'),
+       ('Smernov', 'Alfa Romeo', 'Stelvio Ti (949)'),
+       ('Smernov', 'Chevrolet', 'Silverado 2500 HD Custom Crew Cab'),
+       ('Smernov', 'Ferrari', 'SF90 (670)'),
+       ('Voinov', 'Ford', 'Focus ST')
 SQL;
+
     try {
         if (!$mysqli->query($sql1)) {
             throw new Exception($mysqli->error);
@@ -56,4 +61,3 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 }
-

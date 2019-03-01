@@ -6,31 +6,25 @@ function createTable()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
     $sql1 = <<<SQL
-        DROP TABLE IF EXISTS courses
+        DROP TABLE IF EXISTS topics
 SQL;
     $sql2 = <<<SQL
         DROP TABLE IF EXISTS users
 SQL;
     $sql3 = <<<SQL
-        DROP TABLE IF EXISTS course_members
+        CREATE TABLE users(
+        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+        username VARCHAR(255) NOT NULL UNIQUE, 
+        email VARCHAR(255) NOT NULL, 
+        created_at TIMESTAMP NOT NULL)
 SQL;
     $sql4 = <<<SQL
-        CREATE TABLE courses(
-        name VARCHAR (255), 
-        body TEXT, 
-        created_at TIMESTAMP)
-SQL;
-    $sql5 = <<<SQL
-        CREATE TABLE users(
-        first_name VARCHAR (255), 
-        email VARCHAR (255), 
-        manager  BOOLEAN)
-SQL;
-    $sql6 = <<<SQL
-        CREATE TABLE course_members(
-        user_id INTEGER, 
-        course_id INTEGER , 
-        created_at  TIMESTAMP)
+        CREATE TABLE topics(
+        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+        user_id INT NOT NULL,
+        body VARCHAR(255) NOT NULL, 
+        created_at TIMESTAMP NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id))
 SQL;
     try {
         if (!$mysqli->query($sql1)) {
@@ -45,15 +39,8 @@ SQL;
         if (!$mysqli->query($sql4)) {
             throw new Exception($mysqli->error);
         }
-        if (!$mysqli->query($sql5)) {
-            throw new Exception($mysqli->error);
-        }
-        if (!$mysqli->query($sql6)) {
-            throw new Exception($mysqli->error);
-        }
 
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
 }
-

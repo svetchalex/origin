@@ -21,7 +21,7 @@ SQL;
     $sql4 = <<<SQL
         CREATE TABLE topics(
         id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
-        user_id INT NOT NULL,
+        user_id INT NOT NULL REFERENCES users(id),
         body VARCHAR(255) NOT NULL, 
         created_at TIMESTAMP NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id))

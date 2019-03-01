@@ -2,8 +2,9 @@
 /**
  *
  */
-function select_house()
+function select_count()
 {
+
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
     $sql1 = <<<SQL
         DROP TABLE IF EXISTS users
@@ -26,7 +27,7 @@ SQL;
         ('Tirion', 'tirion@got.com', '1975-1-11', 'lannister')
 SQL;
     $sql4 = <<<SQL
-        SELECT DISTINCT (house) AS house FROM users ORDER BY house ASC 
+        SELECT  COUNT(*) FROM users WHERE house= 'stark'
 SQL;
 
     try {
@@ -44,4 +45,3 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 }
-

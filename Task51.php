@@ -43,6 +43,4 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_all();
-    return $row;
 }

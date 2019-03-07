@@ -23,6 +23,9 @@ SQL;
     $sql6 = <<<SQL
         DROP TABLE IF EXISTS hdd
 SQL;
+    $sql22 = <<<SQL
+        DROP TABLE IF EXISTS result
+SQL;
     $sql7 = <<<SQL
         CREATE TABLE comp_case(
         id_case INTEGER,
@@ -71,6 +74,11 @@ SQL;
         int_hdd VARCHAR (255),
         memory_hdd INTEGER,
         cost_hdd INTEGER)
+SQL;
+    $sql23 = <<<SQL
+        CREATE TABLE result(
+        name TEXT, 
+        price TEXT)
 SQL;
 
     $sql12 = <<<SQL
@@ -165,7 +173,12 @@ SQL;
         if (!$mysqli->query($sql16)) {
             throw new Exception($mysqli->error);
         }
-
+        if (!$mysqli->query($sql22)) {
+            throw new Exception($mysqli->error);
+        }
+        if (!$mysqli->query($sql23)) {
+            throw new Exception($mysqli->error);
+        }
 
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
@@ -188,8 +201,8 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_all();
-    return $row;
+
+    return $row = $res->fetch_all();
 }
 
 function select_motherboard()
@@ -207,8 +220,8 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_all();
-    return $row;
+
+    return $row = $res->fetch_all();
 }
 
 function select_cpu()
@@ -226,8 +239,8 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_all();
-    return $row;
+
+    return $row = $res->fetch_all();
 }
 
 
@@ -246,8 +259,8 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_all();
-    return $row;
+
+    return $row = $res->fetch_all();
 }
 
 
@@ -266,8 +279,8 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_all();
-    return $row;
+
+    return $row = $res->fetch_all();
 }
 
 function search_name($base, $search)
@@ -285,31 +298,64 @@ SQL;
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-    $row = $res->fetch_assoc();
-    return $row;
+
+    return $row = $res->fetch_assoc();
 }
+
+function res_base($name, $price)
+{
+    $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
+
+    $sql24 = <<<SQL
+        INSERT INTO result ( name, price) VALUES
+        ('$name', '$price')
+        
+SQL;
+    try {
+        if (!$res = $mysqli->query($sql24)) {
+            throw new Exception($mysqli->error);
+        }
+
+    } catch (Exception $e) {
+        echo 'Error: ', $e->getMessage(), "\n";
+    }
+
+    return $row = $res->fetch_assoc();
+}
+
 
 function sum()
 {
-
-
-        $sum = 0;
-        $cost_case = 0;
-        $cost_mb = 0;
-        if ($_POST['comp_case'] !== 'Корпус') {
-            $arr = search_name('comp_case', $_POST['comp_case']);
-            $cost_case = $arr['cost_case'];
-        }
-        if ($_POST['motherboard'] !== 'Корпус') {
-            $arr = search_name('motherboard', $_POST['motherboard']);
-            $cost_mb = $arr['cost_mb'];
-        }
-        // var_dump($arr);
-        $sum = $cost_case + $cost_mb;
-        return $sum;
-
+    $cost_case = 0;
+    $cost_mb = 0;
+    $cost_cpu = 0;
+    $cost_ram = 0;
+    $cost_hdd = 0;
+    if ($_POST['comp_case'] !== 'Корпус') {
+        $arr = search_name('comp_case', $_POST['comp_case']);
+        $cost_case = $arr['cost_case'];
+    }
+    if ($_POST['motherboard'] !== 'Материнская плата') {
+        $arr = search_name('motherboard', $_POST['motherboard']);
+        $cost_mb = $arr['cost_mb'];
+    }
+    if ($_POST['cpu'] !== 'Процессор') {
+        $arr = search_name('cpu', $_POST['cpu']);
+        $cost_cpu = $arr['cost_cpu'];
+    }
+    if ($_POST['ram'] !== 'Оперативная память') {
+        $arr = search_name('ram', $_POST['ram']);
+        $cost_ram = $arr['cost_ram'];
+    }
+    if ($_POST['hdd'] !== 'Жесткий диск') {
+        $arr = search_name('hdd', $_POST['hdd']);
+        $cost_hdd = $arr['cost_hdd'];
+    }
+    $sum = $cost_case + $cost_mb + $cost_cpu + $cost_ram + $cost_hdd;
+    return $sum;
 }
-//create_base();
+
+create_base();
 //var_dump(search_name('comp_case', '3Cott 1816 Black'));
 
 ?>
@@ -322,62 +368,62 @@ function sum()
 <body>
 <h1>Конфигуратор ПК</h1>
 <form method="post" action="configurator.php">
-<p><select name="comp_case">
-        <option>Корпус</option>
-        <?php
-        $res = select_case();
-        foreach ($res as $item) {
-            echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
-        }
-        ?>
-    </select></p>
-<p><select name="motherboard" autofocus>
-        <option>Материнская плата</option>
-        <?php
-        $res = select_motherboard();
-        foreach ($res as $item) {
-            echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
-        }
-        ?>
-    </select></p>
-<p><select name="cpu" autofocus>
-        <option>Процессор</option>
-        <?php
-        $res = select_cpu();
-        foreach ($res as $item) {
-            echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
-        }
-        ?>
-    </select></p>
-<p><select name="ram" autofocus>
-        <option>Оперативная память</option>
-        <?php
-        $res = select_ram();
-        foreach ($res as $item) {
-            echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
-        }
-        ?>
-    </select></p>
-<p><select name="hdd" autofocus>
-        <option>Жесткий диск</option>
-        <?php
-        $res = select_hdd();
-        foreach ($res as $item) {
-            echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
-        }
-        ?>
-    </select></p>
+    <p><select name="comp_case">
+            <option>Корпус</option>
+            <?php
+            $res = select_case();
+            foreach ($res as $item) {
+                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+            }
+            ?>
+        </select></p>
+    <p><select name="motherboard" autofocus>
+            <option>Материнская плата</option>
+            <?php
+            $res = select_motherboard();
+            foreach ($res as $item) {
+                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+            }
+            ?>
+        </select></p>
+    <p><select name="cpu" autofocus>
+            <option>Процессор</option>
+            <?php
+            $res = select_cpu();
+            foreach ($res as $item) {
+                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+            }
+            ?>
+        </select></p>
+    <p><select name="ram" autofocus>
+            <option>Оперативная память</option>
+            <?php
+            $res = select_ram();
+            foreach ($res as $item) {
+                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+            }
+            ?>
+        </select></p>
+    <p><select name="hdd" autofocus>
+            <option>Жесткий диск</option>
+            <?php
+            $res = select_hdd();
+            foreach ($res as $item) {
+                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+            }
+            ?>
+        </select></p>
 
 
+    <input type="submit" name="button2" value="Рассчитать" >
+    <?php
+    if (isset($_POST['button2'])) {
+        echo sum();
+        res_base('a', 'b');
+    }
+    ?>
+    <input type="button" value="Перейти" onclick=" location.href=' http://stud03/result.php' ">
 
-    <input type="button" name="button1" value="Проверить совместимость">
-    <input type="submit" name="button2" value="Рассчитать">
-
-<?php
-if (isset($_POST['button2'])) {
-    echo sum();
-}
-?>
 </form>
 </body>
 </html>

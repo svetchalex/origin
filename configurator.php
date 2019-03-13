@@ -324,11 +324,11 @@ function search_name($base, $search)
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
 
-    $sql21 = <<<SQL
+    $sql22 = <<<SQL
         SELECT * FROM $base WHERE name = '$search'
 SQL;
     try {
-        if (!$res = $mysqli->query($sql21)) {
+        if (!$res = $mysqli->query($sql22)) {
             throw new Exception($mysqli->error);
         }
 

@@ -21,4 +21,4 @@
     echo '<tr><td>' . 'Итого:' . '</td><td>' . $_SESSION['sum'] . ' руб.'.'</td></tr>';
     ?>
 </table>
-<input type="button" value="Распечатать в Excel" onclick=" location.href=' http://stud03/excel.php' ">
+<input type="button" value="Распечатать в Excel" onclick=" location.href=' http://alpha.rarus-crimea.ru/excel.php' ">

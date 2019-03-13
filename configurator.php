@@ -1,28 +1,35 @@
 <?php
 /**
- *
+ * @author Sveta Chernokutsatova
+ * @author Sveta Chernokutsatova <svetchalex@gmail.com>
  */
 require __DIR__ . '/vendor/autoload.php';
-use Monolog\Logger;
 
+use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 $logger = new Logger('main');
+try {
+    $logger->pushHandler(new StreamHandler(__DIR__ . '/app.log', Logger::DEBUG));
+    $logger->info('Выбор корпуса', array('comp_case' => $_SESSION['comp_case']));
+    $logger->info('Стоимость корпуса', array('cost_case' => $_SESSION['cost_case']));
+    $logger->info('Выбор материнской платы', array('motherboard' => $_SESSION['motherboard']));
+    $logger->info('Стоимость материнской платы', array('cost_mb' => $_SESSION['cost_mb']));
+    $logger->info('Выбор процессора', array('cpu' => $_SESSION['cpu']));
+    $logger->info('Стоимость процессора', array('cost_cpu' => $_SESSION['cost_cpu']));
+    $logger->info('Выбор оперативной памяти', array('ram' => $_SESSION['ram']));
+    $logger->info('Стоимость оперативной памяти', array('cost_ram' => $_SESSION['cost_ram']));
+    $logger->info('Выбор жесткого диска', array('hdd' => $_SESSION['hdd']));
+    $logger->info('Стоимость жесткого диска', array('cost_hdd' => $_SESSION['cost_hdd']));
+    $logger->info('Вычисление общей стоимости', array('sum' => $_SESSION['sum']));
+} catch (Exception $e) {
+    echo 'Error: ', $e->getMessage(), "\n";
+}
 
-$logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::DEBUG));
 
-$logger -> info ('Выбор корпуса', array ('comp_case'  => $_SESSION['comp_case']));
-$logger -> info ('Стоимость корпуса', array ('cost_case'  => $_SESSION['cost_case']));
-$logger -> info ('Выбор материнской платы', array ('motherboard'  => $_SESSION['motherboard']));
-$logger -> info ('Стоимость материнской платы', array ('cost_mb'  => $_SESSION['cost_mb']));
-$logger -> info ('Выбор процессора', array ('cpu'  => $_SESSION['cpu']));
-$logger -> info ('Стоимость процессора', array ('cost_cpu'  => $_SESSION['cost_cpu']));
-$logger -> info ('Выбор оперативной памяти', array ('ram'  => $_SESSION['ram']));
-$logger -> info ('Стоимость оперативной памяти', array ('cost_ram'  => $_SESSION['cost_ram']));
-$logger -> info ('Выбор жесткого диска', array ('hdd'  => $_SESSION['hdd']));
-$logger -> info ('Стоимость жесткого диска', array ('cost_hdd'  => $_SESSION['cost_hdd']));
-$logger -> info ('Вычисление общей стоимости', array ('sum'  => $_SESSION['sum']));
-
+/**
+ * @return bool
+ */
 function create_base()
 {
 
@@ -194,6 +201,9 @@ SQL;
     return true;
 }
 
+/**
+ * @return mixed
+ */
 function select_case()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
@@ -210,9 +220,12 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 
-    return $row = $res->fetch_all();
+    return $res->fetch_all();
 }
 
+/**
+ * @return mixed
+ */
 function select_motherboard()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
@@ -229,9 +242,12 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 
-    return $row = $res->fetch_all();
+    return $res->fetch_all();
 }
 
+/**
+ * @return mixed
+ */
 function select_cpu()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
@@ -248,10 +264,13 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 
-    return $row = $res->fetch_all();
+    return $res->fetch_all();
 }
 
 
+/**
+ * @return mixed
+ */
 function select_ram()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
@@ -268,10 +287,13 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 
-    return $row = $res->fetch_all();
+    return $res->fetch_all();
 }
 
 
+/**
+ * @return mixed
+ */
 function select_hdd()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
@@ -288,19 +310,25 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 
-    return $row = $res->fetch_all();
+    return $res->fetch_all();
 }
 
 
+/**
+ * @param $base
+ * @param $search
+ *
+ * @return array|null
+ */
 function search_name($base, $search)
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
 
-    $sql21 = <<<SQL
+    $sql22 = <<<SQL
         SELECT * FROM $base WHERE name = '$search'
 SQL;
     try {
-        if (!$res = $mysqli->query($sql21)) {
+        if (!$res = $mysqli->query($sql22)) {
             throw new Exception($mysqli->error);
         }
 
@@ -308,15 +336,12 @@ SQL;
         echo 'Error: ', $e->getMessage(), "\n";
     }
 
-    return $row = $res->fetch_assoc();
+    return $res->fetch_assoc();
 }
 
-
-
-create_base();
-
-
-
+/**
+ * @return bool
+ */
 function result_arr()
 {
     session_start();
@@ -329,7 +354,7 @@ function result_arr()
     if ($_POST['comp_case'] !== 'Корпус') {
         $_SESSION['comp_case'] = $_POST['comp_case'];
         $arr = search_name('comp_case', $_SESSION['comp_case']);
-        $_SESSION['cost_case']= $arr['cost_case'];
+        $_SESSION['cost_case'] = $arr['cost_case'];
         $cost_case = $arr['cost_case'];
     }
     if ($_POST['motherboard'] !== 'Материнская плата') {
@@ -361,7 +386,7 @@ function result_arr()
 }
 
 
-//create_base();
+create_base();
 
 
 ?>
@@ -426,7 +451,7 @@ function result_arr()
     ?>
     <input type="submit" name="button1" value="Рассчитать">
     <?php
-    if( isset($_POST['button1']) ){
+    if (isset($_POST['button1'])) {
         echo '<script>window.location.href = "result.php";</script>';
     }
     ?>

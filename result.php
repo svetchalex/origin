@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +17,7 @@
     echo '<tr><td>' . $_SESSION['cpu'] . '</td><td>' . $_SESSION['cost_cpu'] . '</td></tr>';
     echo '<tr><td>' . $_SESSION['ram'] . '</td><td>' . $_SESSION['cost_ram'] . '</td></tr>';
     echo '<tr><td>' . $_SESSION['hdd'] . '</td><td>' . $_SESSION['cost_hdd'] . '</td></tr>';
-    echo '<tr><td>' . 'Итого:' . '</td><td>' . $_SESSION['sum'] . ' руб.'.'</td></tr>';
+    echo '<tr><td>' . 'Итого:' . '</td><td>' . $_SESSION['sum'] . ' руб.' . '</td></tr>';
     ?>
 </table>
 <input type="button" value="Распечатать в Excel" onclick=" location.href=' http://alpha.rarus-crimea.ru/excel.php' ">

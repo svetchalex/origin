@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/Classes/PHPExcel.php';
+require_once __DIR__ . 'Classes/PHPExcel.php';
 $objPHPExcel = new PHPExcel();
 session_start();
 
@@ -27,7 +27,7 @@ if (array_key_exists('hdd', $_SESSION)) {
 }
 foreach ($arr_comp as $key => $item) {
     if ($item === null) {
-        unset($arr_comp[$key],$arr_cost[$key]);
+        unset($arr_comp[$key], $arr_cost[$key]);
 
     }
 }
@@ -51,7 +51,7 @@ for ($i = 1; $i < $cnt + 1; $i++) {
 }
 $objPHPExcel->setActiveSheetIndex(0)
     ->setCellValueByColumnAndRow(0, $cnt + 2, 'Итого: ')
-    ->setCellValueByColumnAndRow(1, $cnt + 2, $_SESSION['sum'].' руб.');
+    ->setCellValueByColumnAndRow(1, $cnt + 2, $_SESSION['sum'] . ' руб.');
 
 $objPHPExcel->getActiveSheet()->setTitle('Конфигуратор ПК');
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet

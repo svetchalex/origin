@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . 'Classes/PHPExcel.php';
+require_once __DIR__ . '/Classes/PHPExcel.php';
 $objPHPExcel = new PHPExcel();
 session_start();
 

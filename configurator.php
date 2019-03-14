@@ -112,11 +112,11 @@ SQL;
 SQL;
     $sql13 = <<<SQL
         INSERT INTO motherboard (id_mb, name, socket_mb, chipset, ddr_mb, ff_mb, rear_panel, cost_mb) VALUES
-        (1, 'ASRock 760GM-HDV', 'AM3+', 'AMD 760G', '2xDDR-3', 'mATX', '2 x PS/2, 4 x USB 2.0, VGA (D-Sub), DVI, HDMI, RJ-45', 4090),
-        (2, 'ASRock Z390 Pro4', '1151', 'Intel Z390', '4xDDR-4', 'ATX', 'PS/2, 2 x USB 2.0, 3 x USB 3.1, USB 3.1 Type-C, VGA (D-Sub), DVI, HDMI, RJ-45', 8980),
-        (3, 'ASUS PRIME A320M-E', 'AM4', 'AMD A320', '2xDDR-4', 'mATX', '2 x PS/2, 5 x USB 3.1, VGA (D-Sub), DVI, HDMI, RJ-45', 4750),
-        (4, 'MSI Z370-A PRO', '1151', 'Intel Z370', '4xDDR-4', 'ATX', 'PS/2, 2 x USB 2.0, 4 x USB 3.1, VGA (D-Sub), DVI, DisplayPort, RJ-45', 7970),
-        (5, 'MSI X470 GAMING PRO', 'AM4', 'AMD X470', '4xDDR-4', 'mATX', 'PS/2, 2 x USB 2.0, 6 x USB 3.1, DVI, HDMI, RJ-45, S/PDIF (оптический)', 13890)
+        (1, 'ASRock 760GM-HDV', 'AM3+', 'AMD 760G', 'DDR-3', 'mATX', '2 x PS/2, 4 x USB 2.0, VGA (D-Sub), DVI, HDMI, RJ-45', 4090),
+        (2, 'ASRock Z390 Pro4', '1151', 'Intel Z390', 'DDR-4', 'ATX', 'PS/2, 2 x USB 2.0, 3 x USB 3.1, USB 3.1 Type-C, VGA (D-Sub), DVI, HDMI, RJ-45', 8980),
+        (3, 'ASUS PRIME A320M-E', 'AM4', 'AMD A320', 'DDR-4', 'mATX', '2 x PS/2, 5 x USB 3.1, VGA (D-Sub), DVI, HDMI, RJ-45', 4750),
+        (4, 'MSI Z370-A PRO', '1151', 'Intel Z370', 'DDR-4', 'ATX', 'PS/2, 2 x USB 2.0, 4 x USB 3.1, VGA (D-Sub), DVI, DisplayPort, RJ-45', 7970),
+        (5, 'MSI X470 GAMING PRO', 'AM4', 'AMD X470', 'DDR-4', 'mATX', 'PS/2, 2 x USB 2.0, 6 x USB 3.1, DVI, HDMI, RJ-45, S/PDIF (оптический)', 13890)
 SQL;
     $sql14 = <<<SQL
         INSERT INTO cpu (id_cpu, name, socket_cpu, numb_cores, cost_cpu) VALUES
@@ -346,45 +346,77 @@ function result_arr()
 {
     session_start();
 
-    $cost_case = 0;
-    $cost_mb = 0;
-    $cost_cpu = 0;
-    $cost_ram = 0;
-    $cost_hdd = 0;
+    $_SESSION['cost_case'] = 0;
+    $_SESSION['cost_mb'] = 0;
+    $_SESSION['cost_cpu'] = 0;
+    $_SESSION['cost_ram'] = 0;
+    $_SESSION['cost_hdd'] = 0;
     if ($_POST['comp_case'] !== 'Корпус') {
         $_SESSION['comp_case'] = $_POST['comp_case'];
         $arr = search_name('comp_case', $_SESSION['comp_case']);
         $_SESSION['cost_case'] = $arr['cost_case'];
-        $cost_case = $arr['cost_case'];
+        $_SESSION['count_case'] = $_POST['count_case'];
     }
     if ($_POST['motherboard'] !== 'Материнская плата') {
         $_SESSION['motherboard'] = $_POST['motherboard'];
         $arr = search_name('motherboard', $_SESSION['motherboard']);
         $_SESSION['cost_mb'] = $arr['cost_mb'];
-        $cost_mb = $arr['cost_mb'];
+        $_SESSION['count_mb'] = $_POST['count_mb'];
     }
     if ($_POST['cpu'] !== 'Процессор') {
         $_SESSION['cpu'] = $_POST['cpu'];
         $arr = search_name('cpu', $_SESSION['cpu']);
         $_SESSION['cost_cpu'] = $arr['cost_cpu'];
-        $cost_cpu = $arr['cost_cpu'];
+        $_SESSION['count_cpu'] = $_POST['count_cpu'];
     }
     if ($_POST['ram'] !== 'Оперативная память') {
         $_SESSION['ram'] = $_POST['ram'];
         $arr = search_name('ram', $_SESSION['ram']);
         $_SESSION['cost_ram'] = $arr['cost_ram'];
-        $cost_ram = $arr['cost_ram'];
+        $_SESSION['count_ram'] = $_POST['count_ram'];
     }
     if ($_POST['hdd'] !== 'Жесткий диск') {
         $_SESSION['hdd'] = $_POST['hdd'];
         $arr = search_name('hdd', $_SESSION['hdd']);
         $_SESSION['cost_hdd'] = $arr['cost_hdd'];
-        $cost_hdd = $arr['cost_hdd'];
+        $_SESSION['count_hdd'] = $_POST['count_hdd'];
     }
-    $_SESSION['sum'] = $cost_case + $cost_mb + $cost_cpu + $cost_ram + $cost_hdd;
+    $_SESSION['sum'] = $_SESSION['cost_case'] * $_SESSION['count_case'] + $_SESSION['cost_mb'] * $_SESSION['count_mb'] +
+        $_SESSION['cost_cpu'] * $_SESSION['count_cpu'] + $_SESSION['cost_ram'] * $_SESSION['count_ram'] +
+        $_SESSION['cost_hdd'] * $_SESSION['count_hdd'];
     return true;
 }
 
+function compatibility()
+{
+    $comp = true;
+    if ($_POST['motherboard'] !== 'Материнская плата') {
+        $arr_mb = search_name('motherboard', $_POST['comp_case']);
+        if ($_POST['cpu'] !== 'Процессор') {
+            $arr_cpu = search_name('cpu', $_POST['cpu']);
+            if ($arr_cpu['socket_cpu'] !== $arr_mb['socket_mb']) {
+                $comp = false;
+            }
+        }
+        if ($_POST['ram'] !== 'Оперативная память') {
+            $arr_ram = search_name('ram', $_POST['ram']);
+            if ($arr_ram['ddr_ram'] !== $arr_mb['ddr_mb']) {
+                $comp = false;
+            }
+        }
+        if ($_POST['comp_case'] !== 'Корпус') {
+            $arr_case = search_name('comp_case', $_POST['comp_case']);
+            if (stripos($arr_mb['ff_mb'], $arr_case['ff_case']) === false) {
+                $comp = false;
+            }
+        }
+    }
+    $_SESSION['compatibility'] = 'Комплектующие совместимы';
+    if (!$comp) {
+        $_SESSION['compatibility'] = 'Комплектующие не совместимы';
+    }
+    return true;
+}
 
 create_base();
 
@@ -399,6 +431,7 @@ create_base();
 <body>
 <h1>Конфигуратор ПК</h1>
 <form method="post" action="configurator.php">
+    <p>Выберете корпус:</p>
     <p><select name="comp_case">
             <option>Корпус</option>
             <?php
@@ -408,6 +441,10 @@ create_base();
             }
             ?>
         </select></p>
+    <p>Введите количество корпусов:</p>
+    <p><input type="number" size="3" name="count_case" min="1" max="10" value="1"></p>
+    </select></p>
+    <p>Выберете метернскую плату:</p>
     <p><select name="motherboard">
             <option>Материнская плата</option>
             <?php
@@ -417,6 +454,9 @@ create_base();
             }
             ?>
         </select></p>
+    <p>Введите количество материнских плат:</p>
+    <p><input type="number" size="3" name="count_mb" min="1" max="10" value="1"></p>
+    <p>Выберете процессор:</p>
     <p><select name="cpu">
             <option>Процессор</option>
             <?php
@@ -426,6 +466,9 @@ create_base();
             }
             ?>
         </select></p>
+    <p>Введите количество процессоров:</p>
+    <p><input type="number" size="3" name="count_cpu" min="1" max="10" value="1"></p>
+    <p>Выберете оперативную память:</p>
     <p><select name="ram">
             <option>Оперативная память</option>
             <?php
@@ -435,6 +478,11 @@ create_base();
             }
             ?>
         </select></p>
+
+    <p>Введите количество планок оперативной памяти:</p>
+
+    <p><input type="number" size="3" name="count_ram" min="1" max="10" value="1"></p>
+    <p>Выберете жесткий диск:</p>
     <p><select name="hdd">
             <option>Жесткий диск</option>
             <?php
@@ -444,9 +492,12 @@ create_base();
             }
             ?>
         </select></p>
+    <p>Введите количество жестких дисков:</p>
+    <p><input type="number" size="3" name="count_hdd" min="1" max="10" value="1"></p>
     <?php
 
     result_arr();
+    compatibility();
 
     ?>
     <input type="submit" name="button1" value="Рассчитать">

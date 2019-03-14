@@ -19,21 +19,31 @@
     <thead>
     <tr>
         <th>Наименование комплектующего</th>
+        <th>Количество</th>
         <th>Стоимость</th>
     </tr>
     </thead>
     <tbody>
     <?php
     session_start();
-    echo '<tr><td>' . 'Корпус: ' . $_SESSION['comp_case'] . '</td><td>' . $_SESSION['cost_case'] . '</td></tr>';
-    echo '<tr><td>' . 'Материнская плата: ' . $_SESSION['motherboard'] . '</td><td>' . $_SESSION['cost_mb'] . '</td></tr>';
-    echo '<tr><td>' . 'Процессор: ' . $_SESSION['cpu'] . '</td><td>' . $_SESSION['cost_cpu'] . '</td></tr>';
-    echo '<tr><td>' . 'Оперативная память: ' . $_SESSION['ram'] . '</td><td>' . $_SESSION['cost_ram'] . '</td></tr>';
-    echo '<tr><td>' . 'Жесткий диск: ' . $_SESSION['hdd'] . '</td><td>' . $_SESSION['cost_hdd'] . '</td></tr>';
-    echo '<tr><td>' . 'Итого:' . '</td><td>' . $_SESSION['sum'] . ' руб.' . '</td></tr>';
+    echo '<tr><td>' . 'Корпус: ' . $_SESSION['comp_case'] . '</td><td>' . $_SESSION['count_case'] .
+        '</td><td>' . $_SESSION['cost_case'] . ' руб.' . '</td></tr>';
+    echo '<tr><td>' . 'Материнская плата: ' . $_SESSION['motherboard'] . '</td><td>' . $_SESSION['count_mb'] .
+        '</td><td>' . $_SESSION['cost_mb'] . ' руб.' . '</td></tr>';
+    echo '<tr><td>' . 'Процессор: ' . $_SESSION['cpu'] . '</td><td>' . $_SESSION['count_cpu'] .
+        '</td><td>' . $_SESSION['cost_cpu'] . ' руб.' . '</td></tr>';
+    echo '<tr><td>' . 'Оперативная память: ' . $_SESSION['ram'] . '</td><td>' . $_SESSION['count_ram'] .
+        '</td><td>' . $_SESSION['cost_ram'] . ' руб.' . '</td></tr>';
+    echo '<tr><td>' . 'Жесткий диск: ' . $_SESSION['hdd'] . '</td><td>' . $_SESSION['count_hdd'] .
+        '</td><td>' . $_SESSION['cost_hdd'] . ' руб.' . '</td></tr>';
+    echo '<tr><td>' . 'Итого:' . '</td><td>' . '</td><td>' . $_SESSION['sum'] . ' руб.' . '</td></tr>';
     ?>
     </tbody>
 </table>
+<?php
+session_start();
+echo $_SESSION['compatibility'];
+?>
 <script>
     $(document).ready(function () {
         $('#example').DataTable({

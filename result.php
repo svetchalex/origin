@@ -44,19 +44,6 @@
 session_start();
 echo $_SESSION['compatibility'];
 ?>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable({
-            dom      : 'Bfrtip',
-            buttons  : [
-                'excelHtml5'
-            ],
-            searching: false,
-            ordering : false,
-            paging   : false,
-            "info"   : false
-        });
-    });
-</script>
+
 </body>
 </html>

@@ -25,14 +25,11 @@ try {
 } catch (Exception $e) {
     echo 'Error: ', $e->getMessage(), "\n";
 }
-
-
 /**
  * @return bool
  */
 function create_base()
 {
-
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
     $sql1 = <<<SQL
         DROP TABLE IF EXISTS comp_case
@@ -81,7 +78,6 @@ SQL;
         numb_cores  INTEGER,
         cost_cpu INTEGER)
 SQL;
-
     $sql10 = <<<SQL
         CREATE TABLE ram(
         id_ram INTEGER,
@@ -91,7 +87,6 @@ SQL;
         memory_ram INTEGER,
         cost_ram INTEGER)
 SQL;
-
     $sql11 = <<<SQL
         CREATE TABLE hdd(
         id_hdd INTEGER,
@@ -101,7 +96,6 @@ SQL;
         memory_hdd INTEGER,
         cost_hdd INTEGER)
 SQL;
-
     $sql12 = <<<SQL
         INSERT INTO comp_case (id_case, name, ff_case, size_case, ps, front_panel, cost_case) VALUES
         (1, '3Cott 1816 Black', 'ATX, mATX', 'Midi-Tower', 'без БП', '2 x USB 2.0, Audio', 1860),
@@ -126,7 +120,6 @@ SQL;
         (4, 'Intel Celeron G4900 BOX', '1151', 2, 3690),
         (5, 'Intel Core i3 - 8100 OEM', '1151', 4, 8890)
 SQL;
-
     $sql15 = <<<SQL
         INSERT INTO ram (id_ram, name, ff_ram, ddr_ram, memory_ram, cost_ram) VALUES
         (1, '1Gb DDR-III 1333MHz Patriot', 'DIMM', 'DDR-3', 1024, 360),
@@ -135,7 +128,6 @@ SQL;
         (4,  '4Gb DDR4 2400MHz Kingston', 'DIMM', 'DDR-4', 4096, 2000),
         (5,  '8Gb DDR4 2400MHz Hynix', 'DIMM', 'DDR-4', 8192, 4700)
 SQL;
-
     $sql16 = <<<SQL
         INSERT INTO hdd (id_hdd, name, ff_hdd, int_hdd, memory_hdd, cost_hdd) VALUES
         (1, '500Gb SATA HP', '2.5', 'SATA', 500, 6370),
@@ -144,7 +136,6 @@ SQL;
         (4, '1Tb SATA-III Toshiba P300', '3.5', 'SATA', 1000, 2940),
         (5, '1Tb SATA-II Seagate Pipeline HD', '3.5', 'SATA', 1000, 4090)
 SQL;
-
     try {
         if (!$mysqli->query($sql1)) {
             throw new Exception($mysqli->error);
@@ -194,7 +185,6 @@ SQL;
         if (!$mysqli->query($sql16)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
@@ -207,7 +197,6 @@ SQL;
 function select_case()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
-
     $sql17 = <<<SQL
         SELECT * FROM comp_case ORDER BY name ASC 
 SQL;
@@ -215,11 +204,9 @@ SQL;
         if (!$res = $mysqli->query($sql17)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-
     return $res->fetch_all();
 }
 
@@ -229,7 +216,6 @@ SQL;
 function select_motherboard()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
-
     $sql18 = <<<SQL
         SELECT * FROM motherboard ORDER BY name ASC 
 SQL;
@@ -237,11 +223,9 @@ SQL;
         if (!$res = $mysqli->query($sql18)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-
     return $res->fetch_all();
 }
 
@@ -251,7 +235,6 @@ SQL;
 function select_cpu()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
-
     $sql19 = <<<SQL
         SELECT * FROM cpu ORDER BY name ASC 
 SQL;
@@ -259,14 +242,11 @@ SQL;
         if (!$res = $mysqli->query($sql19)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-
     return $res->fetch_all();
 }
-
 
 /**
  * @return mixed
@@ -274,7 +254,6 @@ SQL;
 function select_ram()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
-
     $sql20 = <<<SQL
         SELECT * FROM ram ORDER BY name ASC 
 SQL;
@@ -282,14 +261,11 @@ SQL;
         if (!$res = $mysqli->query($sql20)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-
     return $res->fetch_all();
 }
-
 
 /**
  * @return mixed
@@ -297,7 +273,6 @@ SQL;
 function select_hdd()
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
-
     $sql21 = <<<SQL
         SELECT * FROM hdd ORDER BY name ASC 
 SQL;
@@ -305,14 +280,11 @@ SQL;
         if (!$res = $mysqli->query($sql21)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-
     return $res->fetch_all();
 }
-
 
 /**
  * @param $base
@@ -323,7 +295,6 @@ SQL;
 function search_name($base, $search)
 {
     $mysqli = new mysqli('localhost', 'stud03', 'password', 'data');
-
     $sql22 = <<<SQL
         SELECT * FROM $base WHERE name = '$search'
 SQL;
@@ -331,11 +302,9 @@ SQL;
         if (!$res = $mysqli->query($sql22)) {
             throw new Exception($mysqli->error);
         }
-
     } catch (Exception $e) {
         echo 'Error: ', $e->getMessage(), "\n";
     }
-
     return $res->fetch_assoc();
 }
 
@@ -345,7 +314,6 @@ SQL;
 function result_arr()
 {
     session_start();
-
     $_SESSION['cost_case'] = 0;
     $_SESSION['cost_mb'] = 0;
     $_SESSION['cost_cpu'] = 0;
@@ -387,6 +355,9 @@ function result_arr()
     return true;
 }
 
+/**
+ * @return bool
+ */
 function compatibility()
 {
     $comp = true;
@@ -406,7 +377,7 @@ function compatibility()
         }
         if ($_POST['comp_case'] !== 'Корпус') {
             $arr_case = search_name('comp_case', $_POST['comp_case']);
-            if (stripos($arr_mb['ff_mb'], $arr_case['ff_case']) === false) {
+            if (stripos($arr_case['ff_case'], $arr_mb['ff_mb']) === false) {
                 $comp = false;
             }
         }
@@ -415,12 +386,11 @@ function compatibility()
     if (!$comp) {
         $_SESSION['compatibility'] = 'Комплектующие не совместимы';
     }
-    return true;
+    return $_SESSION['compatibility'];
 }
 
+$selected = '';
 create_base();
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -436,21 +406,36 @@ create_base();
             <option>Корпус</option>
             <?php
             $res = select_case();
+
+
             foreach ($res as $item) {
-                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+                if (array_key_exists('button2', $_POST)) {
+                    if ($_POST['comp_case'] === $item[1]) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+                }
+                echo '<option value="' . $item[1] . '" ' . $selected . '>' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
             }
             ?>
         </select></p>
     <p>Введите количество корпусов:</p>
     <p><input type="number" size="3" name="count_case" min="1" max="10" value="1"></p>
-    </select></p>
-    <p>Выберете метернскую плату:</p>
+    <p>Выберете метеринскую плату:</p>
     <p><select name="motherboard">
             <option>Материнская плата</option>
             <?php
             $res = select_motherboard();
             foreach ($res as $item) {
-                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+                if (array_key_exists('button2', $_POST)) {
+                    if ($_POST['motherboard'] === $item[1]) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+                }
+                echo '<option value="' . $item[1] . '"' . $selected . '>' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
             }
             ?>
         </select></p>
@@ -462,7 +447,14 @@ create_base();
             <?php
             $res = select_cpu();
             foreach ($res as $item) {
-                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+                if (array_key_exists('button2', $_POST)) {
+                    if ($_POST['cpu'] === $item[1]) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+                }
+                echo '<option value="' . $item[1] . '"' . $selected . '>' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
             }
             ?>
         </select></p>
@@ -474,7 +466,14 @@ create_base();
             <?php
             $res = select_ram();
             foreach ($res as $item) {
-                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+                if (array_key_exists('button2', $_POST)) {
+                    if ($_POST['ram'] === $item[1]) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+                }
+                echo '<option value="' . $item[1] . '"' . $selected . '>' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
             }
             ?>
         </select></p>
@@ -488,17 +487,22 @@ create_base();
             <?php
             $res = select_hdd();
             foreach ($res as $item) {
-                echo '<option value="' . $item[1] . '">' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
+                if (array_key_exists('button2', $_POST)) {
+                    if ($_POST['hdd'] === $item[1]) {
+                        $selected = 'selected';
+                    } else {
+                        $selected = '';
+                    }
+                }
+                echo '<option value="' . $item[1] . '"' . $selected . '>' . $item[1] . ' Цена:' . $item[count($item) - 1] . '</option>';
             }
             ?>
         </select></p>
     <p>Введите количество жестких дисков:</p>
     <p><input type="number" size="3" name="count_hdd" min="1" max="10" value="1"></p>
     <?php
-
     result_arr();
     compatibility();
-
     ?>
     <input type="submit" name="button1" value="Рассчитать">
     <?php
@@ -506,8 +510,12 @@ create_base();
         echo '<script>window.location.href = "result.php";</script>';
     }
     ?>
+    <input type="submit" name="button2" value="Проверить совместимость">
+    <?php
+    if (isset($_POST['button2'])) {
+        echo compatibility();
+    }
+    ?>
 </form>
 </body>
 </html>
-
-

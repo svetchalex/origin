@@ -40,10 +40,6 @@
     ?>
     </tbody>
 </table>
-<?php
-session_start();
-echo $_SESSION['compatibility'];
-?>
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
